@@ -44,14 +44,16 @@ def reduce_item(key, value):
     if type(value) is list:
         i=0
         for sub_item in value:
-            reduce_item(key+'_'+to_string(i), sub_item)
+            sub_key = to_string(i) if key is None else key+'_'+to_string(i)
+            reduce_item(sub_key, sub_item)
             i=i+1
 
     #Reduction Condition 2
     elif type(value) is dict:
         sub_keys = value.keys()
-        for sub_key in sub_keys:
-            reduce_item(key+'_'+to_string(sub_key), value[sub_key])
+        for child_key in sub_keys:
+            sub_key = to_string(child_key) if key is None else key+'_'+to_string(child_key)
+            reduce_item(sub_key, value[child_key])
     
     #Base Condition
     else:
@@ -59,22 +61,27 @@ def reduce_item(key, value):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print ("\nUsage: python json_to_csv.py <node_name> <json_in_file_path> <csv_out_file_path>\n")
+    if len(sys.argv) != 3 and len(sys.argv) != 4:
+        print ("\nUsage: python json_to_csv.py (<node_name>) <json_in_file_path> <csv_out_file_path>\n")
     else:
         #Reading arguments
-        node = sys.argv[1]
-        json_file_path = sys.argv[2]
-        csv_file_path = sys.argv[3]
+        if len(sys.argv) == 3:
+            node = None
+            json_file_path = sys.argv[1]
+            csv_file_path = sys.argv[2]
+        else:
+            node = sys.argv[1]
+            json_file_path = sys.argv[2]
+            csv_file_path = sys.argv[3]
 
         fp = open(json_file_path, 'r')
         json_value = fp.read()
         raw_data = json.loads(json_value)
 
-        try:
-            data_to_be_processed = raw_data[node]
-        except:
+        if node is None:
             data_to_be_processed = raw_data
+        else:
+            data_to_be_processed = raw_data[node]
 
         processed_data = []
         header = []

@@ -13,6 +13,7 @@ Usage
 -----
 
 ```
+python /path/to/json_to_csv.py json_in_file_path csv_out_file_path
 python /path/to/json_to_csv.py node_name json_in_file_path csv_out_file_path 
 ```
 
@@ -72,7 +73,6 @@ Ex:-
         }
     ]
 ```
-* `node_name` can be any relevant string if the JSON is a list of dictionaries
 
 Gotchas
 -------
