@@ -54,8 +54,10 @@ def reduce_item(key, value):
         for child_key in sub_keys:
             sub_key = to_string(child_key) if key is None else key+'_'+to_string(child_key)
             reduce_item(sub_key, value[child_key])
-    
+
     #Base Condition
+    elif type(value) is bool:
+        reduced_item[to_string(key)] = to_string(value + 0)
     else:
         reduced_item[to_string(key)] = to_string(value)
 
